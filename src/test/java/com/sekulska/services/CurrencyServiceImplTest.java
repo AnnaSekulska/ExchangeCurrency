@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,10 +56,11 @@ public class CurrencyServiceImplTest {
     @Test
     public void testCheckIfPriceDataHasCorrectStructure() throws IOException, JSONException {
 
-        JSONObject j = createJsonObject();
-        Mockito.when(dataChecker.getPriceData()).thenReturn(j);
 
-        List<PriceData> priceDataList = cut.getPriceData();
+        JSONObject j = createJsonObject();
+        Mockito.when(dataChecker.getPriceData(new HashMap<>())).thenReturn(j);
+
+        List<PriceData> priceDataList = cut.getPriceData(new HashMap<>());
 
         assertEquals("2019-05-16", priceDataList.get(0).getDate());
         assertEquals("1.1206", priceDataList.get(0).getOpen());

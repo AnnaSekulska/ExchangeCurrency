@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
@@ -19,10 +20,8 @@ public class CurrencyServiceImpl implements CurrencyService {
     private DataChecker dataChecker;
 
     @Override
-    public List<PriceData> getPriceData() throws IOException, JSONException {
-        JSONObject j = dataChecker.getPriceData();
-        List<PriceData> l = createPriceDataList(j);
-        return createPriceDataList(j);
+    public List<PriceData> getPriceData(Map<String, String> requestedParameters) throws IOException, JSONException {
+        return createPriceDataList(dataChecker.getPriceData(requestedParameters));
     }
 
     private List<PriceData> createPriceDataList(JSONObject jsonChildObject) {

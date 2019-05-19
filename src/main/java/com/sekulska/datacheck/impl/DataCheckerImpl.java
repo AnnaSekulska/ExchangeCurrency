@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import retrofit.Call;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class DataCheckerImpl implements DataChecker {
@@ -17,12 +18,12 @@ public class DataCheckerImpl implements DataChecker {
     @Autowired
     private HttpCaller httpCaller;
 
-    public JSONObject getPriceData() throws IOException, JSONException {
-        return convertFromResponseBody(getResponseBody());
+    public JSONObject getPriceData(Map<String, String> requestedParameters) throws IOException, JSONException {
+        return convertFromResponseBody(getResponseBody(requestedParameters));
     }
 
-    public String getResponseBody() throws IOException {
-        Call<ResponseBody> data = httpCaller.getAllData();
+    public String getResponseBody(Map<String, String> requestedParameters) throws IOException {
+        Call<ResponseBody> data = httpCaller.getAllData(requestedParameters);
         return data.execute().body().string();
     }
 
