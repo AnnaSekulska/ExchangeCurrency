@@ -1,6 +1,7 @@
 package com.sekulska.datacheck.impl;
 
 import com.sekulska.datacheck.DataChecker;
+import com.sekulska.datacheck.ResourcesNotFoundException;
 import com.sekulska.http.HttpCaller;
 import com.squareup.okhttp.ResponseBody;
 import org.json.JSONException;
@@ -28,7 +29,8 @@ public class DataCheckerImpl implements DataChecker {
     }
 
     private JSONObject convertFromResponseBody(String responseBody) throws JSONException {
-        JSONObject jsonObject =new JSONObject(responseBody);
+        JSONObject jsonObject = new JSONObject(responseBody);
+        if(jsonObject.has("Error Message")) throw new ResourcesNotFoundException("Please check other currencies");
         return  jsonObject.getJSONObject("Time Series FX (Daily)");
     }
 }
