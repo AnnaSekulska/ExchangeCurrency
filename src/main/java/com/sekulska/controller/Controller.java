@@ -26,10 +26,8 @@ public class Controller {
             @RequestParam(value = "to_symbol") String to_symbol) throws IOException, JSONException {
 
         Map<String, String> requestedParameters = new HashMap<>();
-        requestedParameters.put("function", "FX_DAILY");
         requestedParameters.put("from_symbol", from_symbol);
         requestedParameters.put("to_symbol", to_symbol);
-        requestedParameters.put("apikey", "H3GW5N01LN6LF");
 
         List<PriceData> priceData = currencyService.getPriceData(requestedParameters);
         return ResponseEntity.ok(priceData);
