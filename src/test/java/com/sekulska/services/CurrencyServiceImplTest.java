@@ -1,10 +1,9 @@
 package com.sekulska.services;
 
 import com.sekulska.datacheck.DataChecker;
+import com.sekulska.datacheck.ResourcesNotFoundException;
 import com.sekulska.datacheck.impl.PriceData;
-
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,48 +27,66 @@ public class CurrencyServiceImplTest {
     @InjectMocks
     private CurrencyServiceImpl cut;
 
-    private JSONObject createJsonObject() throws JSONException {
+    private String createJsonString() {
 
-        String jsonString = "{\n" +
-                "                \"2019-05-18\": {\n" +
+        return " {\"Time Series FX (Daily)\": {\n" +
+                "        \"2019-05-16\": {\n" +
                 "            \"1. open\": \"1.1165\",\n" +
-                "                    \"2. high\": \"1.1169\",\n" +
-                "                    \"3. low\": \"1.1154\",\n" +
-                "                    \"4. close\": \"1.1158\"\n" +
+                "            \"2. high\": \"1.1169\",\n" +
+                "            \"3. low\": \"1.1154\",\n" +
+                "            \"4. close\": \"1.1158\"\n" +
+                "        },\n" +
+                "        \"2019-05-18\": {\n" +
+                "            \"1. open\": \"1.1174\",\n" +
+                "            \"2. high\": \"1.1184\",\n" +
+                "            \"3. low\": \"1.1154\",\n" +
+                "            \"4. close\": \"1.1158\"\n" +
                 "        },\n" +
                 "        \"2019-05-17\": {\n" +
-                "            \"1. open\": \"1.1174\",\n" +
-                "                    \"2. high\": \"1.1184\",\n" +
-                "                    \"3. low\": \"1.1154\",\n" +
-                "                    \"4. close\": \"1.1158\"\n" +
-                "        },\n" +
-                "        \"2019-05-16\": {\n" +
                 "            \"1. open\": \"1.1206\",\n" +
-                "                    \"2. high\": \"1.1224\",\n" +
-                "                    \"3. low\": \"1.1164\",\n" +
-                "                    \"4. close\": \"1.1174\"\n" +
-                "        }}";
+                "            \"2. high\": \"1.1224\",\n" +
+                "            \"3. low\": \"1.1164\",\n" +
+                "            \"4. close\": \"1.1174\"\n" +
+                "        }}}";
+    }
 
-        return new JSONObject(jsonString);
+    private String createErrorJsonString() {
+        return " {\"Error Message\": \"message\"}";
     }
 
     @Test
     public void testCheckIfPriceDataHasCorrectStructure() throws IOException, JSONException {
-
-
-        JSONObject j = createJsonObject();
-        Mockito.when(dataChecker.getPriceData(new HashMap<>())).thenReturn(j);
+        Mockito.when(dataChecker.getPriceData(new HashMap<>())).thenReturn(createJsonString());
 
         List<PriceData> priceDataList = cut.getPriceData(new HashMap<>());
 
         assertEquals("2019-05-16", priceDataList.get(0).getDate());
-        assertEquals("1.1206", priceDataList.get(0).getOpen());
+        assertEquals("1.1165", priceDataList.get(0).getOpen());
 
         assertEquals("2019-05-17", priceDataList.get(1).getDate());
-        assertEquals("1.1174", priceDataList.get(1).getOpen());
+        assertEquals("1.1206", priceDataList.get(1).getOpen());
 
         assertEquals("2019-05-18", priceDataList.get(2).getDate());
-        assertEquals("1.1165", priceDataList.get(2).getOpen());
+        assertEquals("1.1174", priceDataList.get(2).getOpen());
     }
+
+    @Test
+    public void testCheckIfReturnedListIsSortedAscending() throws IOException, JSONException {
+        Mockito.when(dataChecker.getPriceData(new HashMap<>())).thenReturn(createJsonString());
+
+        List<PriceData> priceDataList = cut.getPriceData(new HashMap<>());
+
+        assertEquals("2019-05-16", priceDataList.get(0).getDate());
+
+        assertEquals("2019-05-17", priceDataList.get(1).getDate());
+
+        assertEquals("2019-05-18", priceDataList.get(2).getDate());
+    }
+
+    @Test(expected = ResourcesNotFoundException.class)
+    public void testCheckIfErrorMessageIsHandled() throws JSONException {
+        cut.convertFromResponseBody(createErrorJsonString());
+    }
+
 
 }
