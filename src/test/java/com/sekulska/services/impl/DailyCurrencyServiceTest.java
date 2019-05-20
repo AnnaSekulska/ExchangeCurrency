@@ -1,15 +1,16 @@
-package com.sekulska.services;
+package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.DataChecker;
 import com.sekulska.datacheck.ResourcesNotFoundException;
-import com.sekulska.datacheck.impl.PriceData;
+import com.sekulska.datacheck.PriceData;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class CurrencyServiceImplTest {
+public class DailyCurrencyServiceTest {
 
     @Mock
     private DataChecker dataChecker;
 
     @InjectMocks
-    private CurrencyServiceImpl cut;
+    private DailyCurrencyService cut;
 
     private String createJsonString() {
 
@@ -61,13 +62,13 @@ public class CurrencyServiceImplTest {
         List<PriceData> priceDataList = cut.getPriceData(new HashMap<>());
 
         assertEquals("2019-05-16", priceDataList.get(0).getDate());
-        assertEquals("1.1165", priceDataList.get(0).getOpen());
+        assertEquals("1.1165", priceDataList.get(0).getPrice());
 
         assertEquals("2019-05-17", priceDataList.get(1).getDate());
-        assertEquals("1.1206", priceDataList.get(1).getOpen());
+        assertEquals("1.1206", priceDataList.get(1).getPrice());
 
         assertEquals("2019-05-18", priceDataList.get(2).getDate());
-        assertEquals("1.1174", priceDataList.get(2).getOpen());
+        assertEquals("1.1174", priceDataList.get(2).getPrice());
     }
 
     @Test

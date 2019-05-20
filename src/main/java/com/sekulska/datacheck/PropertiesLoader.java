@@ -12,7 +12,8 @@ import java.util.Properties;
 @Component
 public class PropertiesLoader {
 
-    private static Map<String, String> requestedParameters = new HashMap<>();
+    private static Map<String, String> requestedParamFxDaily = new HashMap<>();
+    private static Map<String, String> requestedParamRealTime = new HashMap<>();
 
     @PostConstruct
     public void loadProperties(){
@@ -20,19 +21,38 @@ public class PropertiesLoader {
             Properties properties = new Properties();
             if(input == null) throw new ResourcesNotFoundException("Unable to find urlConfig.properties");
             properties.load(input);
-            requestedParameters.put("function", properties.getProperty("function"));
-            requestedParameters.put("apikey", properties.getProperty("apikey"));
+
+            setRequestedParameters(properties);
+
         }catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
-    public static void setRequestedParameters(String key, String value) {
-        requestedParameters.put(key, value);
+    private void setRequestedParameters(Properties properties){
+        setRequestedParamFxDaily("function", properties.getProperty("daily_function"));
+        setRequestedParamRealTime("function", properties.getProperty("real_time_function"));
+        setApiKey("apikey", properties.getProperty("api_key"));
     }
 
-    public static Map<String, String> getRequestedParameters() {
-        return requestedParameters;
+    public static Map<String, String> getRequestedParamFxDaily() {
+        return requestedParamFxDaily;
+    }
+
+    public static void setRequestedParamFxDaily(String key, String value) {
+        requestedParamFxDaily.put(key, value);
+    }
+
+    public static Map<String, String> getRequestedParamRealTime() {
+        return requestedParamRealTime;
+    }
+
+    public static void setRequestedParamRealTime(String key, String value) {
+        requestedParamRealTime.put(key, value);
+    }
+
+    private void setApiKey(String key, String value){
+        requestedParamFxDaily.put(key, value);
+        requestedParamRealTime.put(key, value);
     }
 }

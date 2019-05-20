@@ -1,8 +1,9 @@
 package com.sekulska.controller;
 
+import com.sekulska.datacheck.PriceData;
 import com.sekulska.datacheck.PropertiesLoader;
-import com.sekulska.datacheck.impl.PriceData;
-import com.sekulska.services.CurrencyService;
+import com.sekulska.services.impl.DailyCurrencyService;
+import com.sekulska.services.impl.RealTimeCurrencyService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +18,28 @@ import java.util.List;
 public class Controller {
 
     @Autowired
-    private CurrencyService currencyService;
+    private DailyCurrencyService dailyCurrencyService;
+    @Autowired
+    private RealTimeCurrencyService realTimeCurrencyService;
 
     @GetMapping("/checkPriceData")
     public ResponseEntity checkPriceData(
             @RequestParam(value = "from_symbol") String from_symbol,
             @RequestParam(value = "to_symbol") String to_symbol) throws IOException, JSONException {
+        PropertiesLoader.setRequestedParamFxDaily("from_symbol", from_symbol);
+        PropertiesLoader.setRequestedParamFxDaily("to_symbol", to_symbol);
 
-        PropertiesLoader.setRequestedParameters("from_symbol", from_symbol);
-        PropertiesLoader.setRequestedParameters("to_symbol", to_symbol);
-        List<PriceData> priceData = currencyService.getPriceData(PropertiesLoader.getRequestedParameters());
+        List<PriceData> priceData = dailyCurrencyService.getPriceData(PropertiesLoader.getRequestedParamFxDaily());
         return ResponseEntity.ok(priceData);
+    }
+
+    @GetMapping("/checkRealTimePriceData")
+    public ResponseEntity checkRealTimePrice( @RequestParam(value = "from_currency") String from_symbol,
+                                             @RequestParam(value = "to_currency") String to_symbol) throws IOException{
+        PropertiesLoader.setRequestedParamRealTime("from_currency", from_symbol);
+        PropertiesLoader.setRequestedParamRealTime("to_currency", to_symbol);
+        PriceData priceData = realTimeCurrencyService.getPriceData(PropertiesLoader.getRequestedParamRealTime());
+        return ResponseEntity.ok(priceData);
+
     }
 }

@@ -1,8 +1,9 @@
-package com.sekulska.services;
+package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.DataChecker;
 import com.sekulska.datacheck.ResourcesNotFoundException;
-import com.sekulska.datacheck.impl.PriceData;
+import com.sekulska.datacheck.PriceData;
+import com.sekulska.services.CurrencyService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class CurrencyServiceImpl implements CurrencyService {
+public class DailyCurrencyService implements CurrencyService<List<PriceData>> {
 
     @Autowired
     private DataChecker dataChecker;
@@ -35,7 +36,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         return priceDataList;
     }
 
-    JSONObject convertFromResponseBody(String responseBody) throws JSONException {
+    public JSONObject convertFromResponseBody(String responseBody) throws JSONException {
         JSONObject jsonObject = new JSONObject(responseBody);
         if(jsonObject.has("Error Message")) throw new ResourcesNotFoundException("Please check other currencies");
         return jsonObject.getJSONObject("Time Series FX (Daily)");

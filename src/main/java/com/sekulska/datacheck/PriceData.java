@@ -1,13 +1,13 @@
-package com.sekulska.datacheck.impl;
+package com.sekulska.datacheck;
 
 public class PriceData {
 
     private String date;
-    private String open;
+    private String price;
 
     public PriceData(String date, String open) {
         this.date = date;
-        this.open = open;
+        this.price = open;
     }
 
     public String getDate() {
@@ -18,12 +18,12 @@ public class PriceData {
         this.date = date;
     }
 
-    public String getOpen() {
-        return open;
+    public String getPrice() {
+        return price;
     }
 
-    public void setOpen(String open) {
-        this.open = open;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
 }
