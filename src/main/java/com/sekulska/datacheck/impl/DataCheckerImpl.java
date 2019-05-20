@@ -1,7 +1,6 @@
 package com.sekulska.datacheck.impl;
 
 import com.sekulska.datacheck.DataChecker;
-import com.sekulska.datacheck.PropertiesLoader;
 import com.sekulska.http.HttpCaller;
 import com.squareup.okhttp.ResponseBody;
 import org.json.JSONException;
@@ -23,7 +22,6 @@ public class DataCheckerImpl implements DataChecker {
     }
 
     public String getResponseBody(Map<String, String> requestedParameters) throws IOException {
-        PropertiesLoader.loadProperties(requestedParameters);
         Call<ResponseBody> data = httpCaller.getAllData(requestedParameters);
         return data.execute().body().string();
     }

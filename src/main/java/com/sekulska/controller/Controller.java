@@ -1,5 +1,6 @@
 package com.sekulska.controller;
 
+import com.sekulska.datacheck.PropertiesLoader;
 import com.sekulska.datacheck.impl.PriceData;
 import com.sekulska.services.CurrencyService;
 import org.json.JSONException;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class Controller {
@@ -25,11 +24,9 @@ public class Controller {
             @RequestParam(value = "from_symbol") String from_symbol,
             @RequestParam(value = "to_symbol") String to_symbol) throws IOException, JSONException {
 
-        Map<String, String> requestedParameters = new HashMap<>();
-        requestedParameters.put("from_symbol", from_symbol);
-        requestedParameters.put("to_symbol", to_symbol);
-
-        List<PriceData> priceData = currencyService.getPriceData(requestedParameters);
+        PropertiesLoader.setRequestedParameters("from_symbol", from_symbol);
+        PropertiesLoader.setRequestedParameters("to_symbol", to_symbol);
+        List<PriceData> priceData = currencyService.getPriceData(PropertiesLoader.getRequestedParameters());
         return ResponseEntity.ok(priceData);
     }
 }
