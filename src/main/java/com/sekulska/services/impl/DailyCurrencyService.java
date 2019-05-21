@@ -23,7 +23,7 @@ public class DailyCurrencyService implements CurrencyService {
 
     @Override
     public List<PriceData> getPriceData(String from_symbol, String to_symbol) throws IOException, JSONException {
-        return createPriceDataList(convertFromResponseBody(dataChecker.getPriceData(from_symbol, to_symbol)));
+        return createPriceDataList(convertFromResponseBody(dataChecker.getDailyPriceData(from_symbol, to_symbol)));
     }
 
     private List<PriceData> createPriceDataList(JSONObject jsonChildObject) {

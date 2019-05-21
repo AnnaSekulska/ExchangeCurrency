@@ -38,7 +38,7 @@ public class RealTimeCurrencyServiceTest {
     }
     @Test
     public void testCheckIfPriceDataHasCorrectStructure() throws IOException, JSONException {
-        Mockito.when(dataChecker.getPriceData("test", "test")).thenReturn(createJsonString());
+        Mockito.when(dataChecker.getRealTimePriceData("test", "test")).thenReturn(createJsonString());
 
         PriceData priceData = cut.getPriceData("test", "test");
         assertEquals("2019-05-20 05:34:35", priceData.getDate());

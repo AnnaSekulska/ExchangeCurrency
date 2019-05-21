@@ -18,7 +18,7 @@ public class RealTimeCurrencyService implements CurrencyService {
 
     @Override
     public PriceData getPriceData(String from_symbol, String to_symbol) throws IOException, JSONException {
-        return createPriceData(convertFromResponseBody(dataChecker.getPriceData(from_symbol, to_symbol)));
+        return createPriceData(convertFromResponseBody(dataChecker.getRealTimePriceData(from_symbol, to_symbol)));
     }
 
     private PriceData createPriceData(JSONObject jsonObject){

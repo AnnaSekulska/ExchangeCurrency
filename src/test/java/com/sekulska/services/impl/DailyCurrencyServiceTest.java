@@ -57,7 +57,7 @@ public class DailyCurrencyServiceTest {
 
     @Test
     public void testCheckIfPriceDataHasCorrectStructure() throws IOException, JSONException {
-        Mockito.when(dataChecker.getPriceData("test", "test")).thenReturn(createJsonString());
+        Mockito.when(dataChecker.getDailyPriceData("test", "test")).thenReturn(createJsonString());
 
         List<PriceData> priceDataList = cut.getPriceData("test", "test");
 
@@ -73,7 +73,7 @@ public class DailyCurrencyServiceTest {
 
     @Test
     public void testCheckIfReturnedListIsSortedAscending() throws IOException, JSONException {
-        Mockito.when(dataChecker.getPriceData("test", "test")).thenReturn(createJsonString());
+        Mockito.when(dataChecker.getDailyPriceData("test", "test")).thenReturn(createJsonString());
 
         List<PriceData> priceDataList = cut.getPriceData("test", "test");
 
