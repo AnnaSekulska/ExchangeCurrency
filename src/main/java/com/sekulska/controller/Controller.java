@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequestMapping("price")
 public class Controller {
 
     @Autowired
@@ -21,7 +23,7 @@ public class Controller {
     @Autowired
     private RealTimeCurrencyService realTimeCurrencyService;
 
-    @GetMapping("/checkPriceData")
+    @GetMapping("/historical")
     public ResponseEntity checkPriceData(
             @RequestParam(value = "from_symbol") String from_symbol,
             @RequestParam(value = "to_symbol") String to_symbol) throws IOException, JSONException {
@@ -30,7 +32,7 @@ public class Controller {
         return ResponseEntity.ok(priceData);
     }
 
-    @GetMapping("/checkRealTimePriceData")
+    @GetMapping("/realtime")
     public ResponseEntity checkRealTimePrice( @RequestParam(value = "from_currency") String from_symbol,
                                              @RequestParam(value = "to_currency") String to_symbol) throws IOException{
 

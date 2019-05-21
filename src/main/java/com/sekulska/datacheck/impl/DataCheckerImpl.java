@@ -1,7 +1,7 @@
 package com.sekulska.datacheck.impl;
 
 import com.sekulska.datacheck.DataChecker;
-import com.sekulska.datacheck.PropertiesLoader;
+import com.sekulska.datacheck.Properties;
 import com.sekulska.http.HttpCaller;
 import com.squareup.okhttp.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class DataCheckerImpl implements DataChecker {
     @Autowired
     private HttpCaller httpCaller;
     @Autowired
-    private PropertiesLoader propertiesLoader;
+    private Properties propertiesLoader;
 
 
     public String getPriceData(String from_symbol, String to_symbol) throws IOException {
