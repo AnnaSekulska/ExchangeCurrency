@@ -6,10 +6,11 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 @Component
 @Scope("singleton")
-public class Properties {
+public class ApiProperties {
 
     private String dailyFunction;
     private String realTimeFunction;
@@ -17,8 +18,8 @@ public class Properties {
 
     @PostConstruct
     public void loadProperties(){
-        try(InputStream input = Properties.class.getClassLoader().getResourceAsStream("urlConfig.properties")) {
-            java.util.Properties properties = new java.util.Properties();
+        try(InputStream input = ApiProperties.class.getClassLoader().getResourceAsStream("urlConfig.properties")) {
+            Properties properties = new Properties();
             if(input == null) throw new ResourcesNotFoundException("Unable to find urlConfig.properties");
             properties.load(input);
             setRequestedParameters(properties);
@@ -28,7 +29,7 @@ public class Properties {
         }
     }
 
-    private void setRequestedParameters(java.util.Properties properties){
+    private void setRequestedParameters(Properties properties){
         dailyFunction = properties.getProperty("daily_function");
         realTimeFunction = properties.getProperty("real_time_function");
         apiKey = properties.getProperty("api_key");

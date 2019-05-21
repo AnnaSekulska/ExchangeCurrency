@@ -1,7 +1,7 @@
 package com.sekulska.datacheck.impl;
 
 import com.sekulska.datacheck.DataChecker;
-import com.sekulska.datacheck.Properties;
+import com.sekulska.datacheck.ApiProperties;
 import com.sekulska.http.HttpCaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class DataCheckerImpl implements DataChecker {
     @Autowired
     private HttpCaller httpCaller;
     @Autowired
-    private Properties properties;
+    private ApiProperties properties;
 
     @Override
     public String getDailyPriceData(String from_symbol, String to_symbol) throws IOException {
