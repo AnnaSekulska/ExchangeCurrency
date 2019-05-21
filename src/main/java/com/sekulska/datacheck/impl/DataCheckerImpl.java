@@ -23,6 +23,7 @@ public class DataCheckerImpl implements DataChecker {
         Map<String, String> requestedParam = new HashMap<>();
         requestedParam.put("function", properties.getDailyFunction());
         requestedParam.put("apikey", properties.getApiKey());
+        requestedParam.put("outputsize", properties.getOutputSize());
         requestedParam.put("from_symbol", from_symbol);
         requestedParam.put("to_symbol", to_symbol);
 

@@ -14,6 +14,7 @@ public class ApiProperties {
 
     private String dailyFunction;
     private String realTimeFunction;
+    private String outputSize;
     private String apiKey;
 
     @PostConstruct
@@ -32,6 +33,7 @@ public class ApiProperties {
     private void setRequestedParameters(Properties properties){
         dailyFunction = properties.getProperty("daily_function");
         realTimeFunction = properties.getProperty("real_time_function");
+        outputSize = properties.getProperty("output_size");
         apiKey = properties.getProperty("api_key");
     }
 
@@ -42,6 +44,8 @@ public class ApiProperties {
     public String getRealTimeFunction() {
         return realTimeFunction;
     }
+
+    public String getOutputSize() { return outputSize; }
 
     public String getApiKey() {
         return apiKey;
