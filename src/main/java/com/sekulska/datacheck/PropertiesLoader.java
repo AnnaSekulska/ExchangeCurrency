@@ -1,19 +1,20 @@
 package com.sekulska.datacheck;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Component
+@Scope("singleton")
 public class PropertiesLoader {
 
-    private static Map<String, String> requestedParamFxDaily = new HashMap<>();
-    private static Map<String, String> requestedParamRealTime = new HashMap<>();
+    private String dailyFunction;
+    private String realTimeFunction;
+    private String apiKey;
 
     @PostConstruct
     public void loadProperties(){
@@ -21,7 +22,6 @@ public class PropertiesLoader {
             Properties properties = new Properties();
             if(input == null) throw new ResourcesNotFoundException("Unable to find urlConfig.properties");
             properties.load(input);
-
             setRequestedParameters(properties);
 
         }catch (IOException ex) {
@@ -30,29 +30,20 @@ public class PropertiesLoader {
     }
 
     private void setRequestedParameters(Properties properties){
-        setRequestedParamFxDaily("function", properties.getProperty("daily_function"));
-        setRequestedParamRealTime("function", properties.getProperty("real_time_function"));
-        setApiKey("apikey", properties.getProperty("api_key"));
+        dailyFunction = properties.getProperty("daily_function");
+        realTimeFunction = properties.getProperty("real_time_function");
+        apiKey = properties.getProperty("api_key");
     }
 
-    public static Map<String, String> getRequestedParamFxDaily() {
-        return requestedParamFxDaily;
+    public String getDailyFunction() {
+        return dailyFunction;
     }
 
-    public static void setRequestedParamFxDaily(String key, String value) {
-        requestedParamFxDaily.put(key, value);
+    public String getRealTimeFunction() {
+        return realTimeFunction;
     }
 
-    public static Map<String, String> getRequestedParamRealTime() {
-        return requestedParamRealTime;
-    }
-
-    public static void setRequestedParamRealTime(String key, String value) {
-        requestedParamRealTime.put(key, value);
-    }
-
-    private void setApiKey(String key, String value){
-        requestedParamFxDaily.put(key, value);
-        requestedParamRealTime.put(key, value);
+    public String getApiKey() {
+        return apiKey;
     }
 }

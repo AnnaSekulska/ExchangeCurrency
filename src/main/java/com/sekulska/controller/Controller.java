@@ -1,7 +1,6 @@
 package com.sekulska.controller;
 
 import com.sekulska.datacheck.PriceData;
-import com.sekulska.datacheck.PropertiesLoader;
 import com.sekulska.services.impl.DailyCurrencyService;
 import com.sekulska.services.impl.RealTimeCurrencyService;
 import org.json.JSONException;
@@ -26,19 +25,16 @@ public class Controller {
     public ResponseEntity checkPriceData(
             @RequestParam(value = "from_symbol") String from_symbol,
             @RequestParam(value = "to_symbol") String to_symbol) throws IOException, JSONException {
-        PropertiesLoader.setRequestedParamFxDaily("from_symbol", from_symbol);
-        PropertiesLoader.setRequestedParamFxDaily("to_symbol", to_symbol);
 
-        List<PriceData> priceData = dailyCurrencyService.getPriceData(PropertiesLoader.getRequestedParamFxDaily());
+        List<PriceData> priceData = dailyCurrencyService.getPriceData(from_symbol, to_symbol);
         return ResponseEntity.ok(priceData);
     }
 
     @GetMapping("/checkRealTimePriceData")
     public ResponseEntity checkRealTimePrice( @RequestParam(value = "from_currency") String from_symbol,
                                              @RequestParam(value = "to_currency") String to_symbol) throws IOException{
-        PropertiesLoader.setRequestedParamRealTime("from_currency", from_symbol);
-        PropertiesLoader.setRequestedParamRealTime("to_currency", to_symbol);
-        PriceData priceData = realTimeCurrencyService.getPriceData(PropertiesLoader.getRequestedParamRealTime());
+
+        PriceData priceData = realTimeCurrencyService.getPriceData(from_symbol, to_symbol);
         return ResponseEntity.ok(priceData);
 
     }

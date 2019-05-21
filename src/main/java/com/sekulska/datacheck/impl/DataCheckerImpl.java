@@ -1,14 +1,15 @@
 package com.sekulska.datacheck.impl;
 
 import com.sekulska.datacheck.DataChecker;
+import com.sekulska.datacheck.PropertiesLoader;
 import com.sekulska.http.HttpCaller;
 import com.squareup.okhttp.ResponseBody;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import retrofit.Call;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -16,13 +17,18 @@ public class DataCheckerImpl implements DataChecker {
 
     @Autowired
     private HttpCaller httpCaller;
+    @Autowired
+    private PropertiesLoader propertiesLoader;
 
-    public String getPriceData(Map<String, String> requestedParameters) throws IOException, JSONException {
-        return getResponseBody(requestedParameters);
-    }
 
-    public String getResponseBody(Map<String, String> requestedParameters) throws IOException {
-        Call<ResponseBody> data = httpCaller.getAllData(requestedParameters);
+    public String getPriceData(String from_symbol, String to_symbol) throws IOException {
+        Map<String, String> requestedParam = new HashMap<>();
+        requestedParam.put("from_symbol", from_symbol);
+        requestedParam.put("to_symbol", to_symbol);
+        requestedParam.put("apikey", propertiesLoader.getApiKey());
+        requestedParam.put("function", propertiesLoader.getDailyFunction());
+
+        Call<ResponseBody> data = httpCaller.getAllData(requestedParam);
         return data.execute().body().string();
     }
 

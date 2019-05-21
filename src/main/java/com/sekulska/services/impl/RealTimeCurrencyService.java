@@ -9,18 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Service
-public class RealTimeCurrencyService implements CurrencyService<PriceData> {
+public class RealTimeCurrencyService implements CurrencyService {
 
     @Autowired
     private DataChecker dataChecker;
 
-
     @Override
-    public PriceData getPriceData(Map<String, String> requestedParameters) throws IOException, JSONException {
-        return createPriceData(convertFromResponseBody(dataChecker.getPriceData(requestedParameters)));
+    public PriceData getPriceData(String from_symbol, String to_symbol) throws IOException, JSONException {
+        return createPriceData(convertFromResponseBody(dataChecker.getPriceData(from_symbol, to_symbol)));
     }
 
     private PriceData createPriceData(JSONObject jsonObject){

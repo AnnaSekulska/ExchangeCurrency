@@ -1,8 +1,8 @@
 package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.DataChecker;
-import com.sekulska.datacheck.ResourcesNotFoundException;
 import com.sekulska.datacheck.PriceData;
+import com.sekulska.datacheck.ResourcesNotFoundException;
 import com.sekulska.services.CurrencyService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,17 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
-public class DailyCurrencyService implements CurrencyService<List<PriceData>> {
+public class DailyCurrencyService implements CurrencyService {
 
     @Autowired
     private DataChecker dataChecker;
 
     @Override
-    public List<PriceData> getPriceData(Map<String, String> requestedParameters) throws IOException, JSONException {
-        return createPriceDataList(convertFromResponseBody(dataChecker.getPriceData(requestedParameters)));
+    public List<PriceData> getPriceData(String from_symbol, String to_symbol) throws IOException, JSONException {
+        return createPriceDataList(convertFromResponseBody(dataChecker.getPriceData(from_symbol, to_symbol)));
     }
 
     private List<PriceData> createPriceDataList(JSONObject jsonChildObject) {

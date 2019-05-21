@@ -11,9 +11,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
-import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RealTimeCurrencyServiceTest {
@@ -39,9 +38,9 @@ public class RealTimeCurrencyServiceTest {
     }
     @Test
     public void testCheckIfPriceDataHasCorrectStructure() throws IOException, JSONException {
-        Mockito.when(dataChecker.getPriceData(new HashMap<>())).thenReturn(createJsonString());
+        Mockito.when(dataChecker.getPriceData("test", "test")).thenReturn(createJsonString());
 
-        PriceData priceData = cut.getPriceData(new HashMap<>());
+        PriceData priceData = cut.getPriceData("test", "test");
         assertEquals("2019-05-20 05:34:35", priceData.getDate());
         assertEquals("110.16000000", priceData.getPrice());
 

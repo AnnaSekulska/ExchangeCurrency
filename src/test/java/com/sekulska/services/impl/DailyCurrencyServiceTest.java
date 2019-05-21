@@ -57,9 +57,9 @@ public class DailyCurrencyServiceTest {
 
     @Test
     public void testCheckIfPriceDataHasCorrectStructure() throws IOException, JSONException {
-        Mockito.when(dataChecker.getPriceData(new HashMap<>())).thenReturn(createJsonString());
+        Mockito.when(dataChecker.getPriceData("test", "test")).thenReturn(createJsonString());
 
-        List<PriceData> priceDataList = cut.getPriceData(new HashMap<>());
+        List<PriceData> priceDataList = cut.getPriceData("test", "test");
 
         assertEquals("2019-05-16", priceDataList.get(0).getDate());
         assertEquals("1.1165", priceDataList.get(0).getPrice());
@@ -73,9 +73,9 @@ public class DailyCurrencyServiceTest {
 
     @Test
     public void testCheckIfReturnedListIsSortedAscending() throws IOException, JSONException {
-        Mockito.when(dataChecker.getPriceData(new HashMap<>())).thenReturn(createJsonString());
+        Mockito.when(dataChecker.getPriceData("test", "test")).thenReturn(createJsonString());
 
-        List<PriceData> priceDataList = cut.getPriceData(new HashMap<>());
+        List<PriceData> priceDataList = cut.getPriceData("test", "test");
 
         assertEquals("2019-05-16", priceDataList.get(0).getDate());
 

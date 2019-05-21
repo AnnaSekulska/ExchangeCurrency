@@ -5,9 +5,9 @@ public class PriceData {
     private String date;
     private String price;
 
-    public PriceData(String date, String open) {
+    public PriceData(String date, String price) {
         this.date = date;
-        this.price = open;
+        this.price = price;
     }
 
     public String getDate() {
