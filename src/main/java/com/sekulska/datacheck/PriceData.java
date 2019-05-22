@@ -1,5 +1,7 @@
 package com.sekulska.datacheck;
 
+import java.util.Objects;
+
 public class PriceData {
 
     private String date;
@@ -26,4 +28,21 @@ public class PriceData {
         this.price = price;
     }
 
+    @Override
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) {
+            return true;
+        }
+        if (otherObject instanceof PriceData) {
+            PriceData that = (PriceData) otherObject;
+            return  price.equals(that.price) &&
+                  date.equals(that.date);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, price);
+    }
 }

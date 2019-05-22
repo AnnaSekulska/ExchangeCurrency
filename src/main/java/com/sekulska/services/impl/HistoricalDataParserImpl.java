@@ -1,29 +1,23 @@
 package com.sekulska.services.impl;
 
-import com.sekulska.datacheck.DataChecker;
 import com.sekulska.datacheck.PriceData;
 import com.sekulska.datacheck.ResourcesNotFoundException;
-import com.sekulska.services.CurrencyService;
+import com.sekulska.services.HistoricalDataParser;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-@Service
-public class DailyCurrencyService implements CurrencyService {
-
-    @Autowired
-    private DataChecker dataChecker;
+@Component
+public class HistoricalDataParserImpl implements HistoricalDataParser {
 
     @Override
-    public List<PriceData> getPriceData(String from_symbol, String to_symbol) throws IOException, JSONException {
-        return createPriceDataList(convertFromResponseBody(dataChecker.getDailyPriceData(from_symbol, to_symbol)));
+    public List<PriceData> parse(String input) throws JSONException {
+        return createPriceDataList(convertFromResponseBody(input));
     }
 
     private List<PriceData> createPriceDataList(JSONObject jsonChildObject) {
@@ -39,7 +33,7 @@ public class DailyCurrencyService implements CurrencyService {
         return priceDataList;
     }
 
-    public JSONObject convertFromResponseBody(String responseBody) throws JSONException {
+    private JSONObject convertFromResponseBody(String responseBody) throws JSONException {
         JSONObject jsonObject = new JSONObject(responseBody);
         if(jsonObject.has("Error Message")) throw new ResourcesNotFoundException("Please check other currencies");
         return jsonObject.getJSONObject("Time Series FX (Daily)");
@@ -49,4 +43,3 @@ public class DailyCurrencyService implements CurrencyService {
         priceDataList.sort(Comparator.comparing(PriceData::getDate));
     }
 }
-

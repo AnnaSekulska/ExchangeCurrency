@@ -1,32 +1,17 @@
 package com.sekulska.services.impl;
 
-import com.sekulska.datacheck.DataChecker;
-import com.sekulska.datacheck.ResourcesNotFoundException;
 import com.sekulska.datacheck.PriceData;
+import com.sekulska.datacheck.ResourcesNotFoundException;
 import org.json.JSONException;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
-
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+public class HistoricalDataParserImplTest {
 
-@RunWith(MockitoJUnitRunner.class)
-public class DailyCurrencyServiceTest {
-
-    @Mock
-    private DataChecker dataChecker;
-
-    @InjectMocks
-    private DailyCurrencyService cut;
+    private HistoricalDataParserImpl cut =  new HistoricalDataParserImpl();
 
     private String createJsonString() {
 
@@ -56,26 +41,31 @@ public class DailyCurrencyServiceTest {
     }
 
     @Test
-    public void testCheckIfPriceDataHasCorrectStructure() throws IOException, JSONException {
-        Mockito.when(dataChecker.getDailyPriceData("test", "test")).thenReturn(createJsonString());
+    public void testCheckIfParserReturnedListWithCorrectData() throws JSONException {
 
-        List<PriceData> priceDataList = cut.getPriceData("test", "test");
+        List<PriceData> priceData = cut.parse(createJsonString());
 
-        assertEquals("2019-05-16", priceDataList.get(0).getDate());
-        assertEquals("1.1165", priceDataList.get(0).getPrice());
+        assertEquals("2019-05-16", priceData.get(0).getDate());
+        assertEquals("1.1165", priceData.get(0).getPrice());
 
-        assertEquals("2019-05-17", priceDataList.get(1).getDate());
-        assertEquals("1.1206", priceDataList.get(1).getPrice());
+        assertEquals("2019-05-17", priceData.get(1).getDate());
+        assertEquals("1.1206", priceData.get(1).getPrice());
 
-        assertEquals("2019-05-18", priceDataList.get(2).getDate());
-        assertEquals("1.1174", priceDataList.get(2).getPrice());
+        assertEquals("2019-05-18", priceData.get(2).getDate());
+        assertEquals("1.1174", priceData.get(2).getPrice());
+
     }
 
     @Test
-    public void testCheckIfReturnedListIsSortedAscending() throws IOException, JSONException {
-        Mockito.when(dataChecker.getDailyPriceData("test", "test")).thenReturn(createJsonString());
+    public void testCheckIfReturnedListHasCorrectlySize() throws JSONException {
+        List<PriceData> priceData = cut.parse(createJsonString());
+        assertEquals(3, priceData.size());
+    }
 
-        List<PriceData> priceDataList = cut.getPriceData("test", "test");
+        @Test
+    public void testCheckIfReturnedListIsSortedAscending() throws JSONException {
+
+        List<PriceData> priceDataList = cut.parse(createJsonString());
 
         assertEquals("2019-05-16", priceDataList.get(0).getDate());
 
@@ -86,8 +76,6 @@ public class DailyCurrencyServiceTest {
 
     @Test(expected = ResourcesNotFoundException.class)
     public void testCheckIfErrorMessageIsHandled() throws JSONException {
-        cut.convertFromResponseBody(createErrorJsonString());
+        cut.parse(createErrorJsonString());
     }
-
-
 }

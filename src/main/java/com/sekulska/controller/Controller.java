@@ -1,7 +1,7 @@
 package com.sekulska.controller;
 
 import com.sekulska.datacheck.PriceData;
-import com.sekulska.services.impl.DailyCurrencyService;
+import com.sekulska.services.impl.DailyCurrencyServiceImpl;
 import com.sekulska.services.impl.RealTimeCurrencyService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +19,18 @@ import java.util.List;
 public class Controller {
 
     @Autowired
-    private DailyCurrencyService dailyCurrencyService;
+    private DailyCurrencyServiceImpl dailyCurrencyService;
     @Autowired
     private RealTimeCurrencyService realTimeCurrencyService;
 
     @GetMapping("/historical")
     public ResponseEntity checkPriceData(
             @RequestParam(value = "from_symbol") String from_symbol,
-            @RequestParam(value = "to_symbol") String to_symbol) throws IOException, JSONException {
+            @RequestParam(value = "to_symbol") String to_symbol,
+            @RequestParam(value = "range") int range,
+            @RequestParam(value = "step") int step) throws IOException, JSONException {
 
-        List<PriceData> priceData = dailyCurrencyService.getPriceData(from_symbol, to_symbol);
+        List<PriceData> priceData = dailyCurrencyService.getHistorical(from_symbol, to_symbol, range, step);
         return ResponseEntity.ok(priceData);
     }
 
