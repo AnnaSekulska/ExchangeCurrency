@@ -2,6 +2,7 @@ package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.DataChecker;
 import com.sekulska.datacheck.PriceData;
+import com.sekulska.model.PriceDataInfo;
 import com.sekulska.services.DailyCurrencyService;
 import com.sekulska.services.HistoricalDataParser;
 import com.sekulska.services.HistoricalFilter;
@@ -24,15 +25,11 @@ public class DailyCurrencyServiceImpl implements DailyCurrencyService {
     @Autowired
     private HistoricalDataParser parser;
 
-
     @Override
-    public List<PriceData> getHistorical(String fromSymbol, String toSymbol, int range, int step) throws IOException, JSONException {
-        return filter.filter(
-                    parser.parse(
-                        dataChecker.getDailyPriceData(fromSymbol, toSymbol)
-                    ),
-                range,
-                step);
+    public PriceDataInfo getHistorical(String fromSymbol, String toSymbol, int range, int step) throws IOException, JSONException {
+        List<PriceData> priceData = parser.parse(dataChecker.getDailyPriceData(fromSymbol, toSymbol));
+        return new PriceDataInfo(filter.filter(priceData, range, step), priceData.size());
     }
+
 }
 

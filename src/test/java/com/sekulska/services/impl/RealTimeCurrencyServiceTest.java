@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static junit.framework.TestCase.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RealTimeCurrencyServiceTest {

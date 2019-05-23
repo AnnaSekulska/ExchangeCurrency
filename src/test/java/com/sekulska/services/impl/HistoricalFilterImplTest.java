@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static junit.framework.TestCase.assertEquals;
+
 
 public class HistoricalFilterImplTest {
 
@@ -23,6 +24,7 @@ public class HistoricalFilterImplTest {
    private String path = "/home/ania/aplikacje/IdeaProjects2/CurrencyExchange/src/test/resources/test_eleven_price_data";
 
    private List<PriceData> getTestPriceData(String fileName){
+
         List<PriceData> testPriceData = new ArrayList<>();
 
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
@@ -103,7 +105,6 @@ public class HistoricalFilterImplTest {
        assertEquals(6, cut.filter(priceData, 10, 2).size());
        assertEquals(2, cut.filter(priceData, 3, 3).size());
        assertEquals(3, cut.filter(priceData, 9, 4).size());
-
     }
 
 
