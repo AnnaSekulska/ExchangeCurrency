@@ -16,6 +16,7 @@ public class ApiProperties {
     private String realTimeFunction;
     private String outputSize;
     private String apiKey;
+    private String showInactive;
 
     @PostConstruct
     public void loadProperties(){
@@ -35,6 +36,7 @@ public class ApiProperties {
         realTimeFunction = properties.getProperty("real_time_function");
         outputSize = properties.getProperty("output_size");
         apiKey = properties.getProperty("api_key");
+        showInactive = properties.getProperty("show_inactive");
     }
 
     public String getDailyFunction() {
@@ -49,5 +51,8 @@ public class ApiProperties {
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public String getShowInactive() { return showInactive;
     }
 }
