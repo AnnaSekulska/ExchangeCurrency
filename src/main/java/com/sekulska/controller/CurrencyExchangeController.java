@@ -2,28 +2,36 @@ package com.sekulska.controller;
 
 import com.sekulska.datacheck.PriceData;
 import com.sekulska.model.PriceDataInfo;
+import com.sekulska.services.ActiveCurrenciesService;
 import com.sekulska.services.impl.DailyCurrencyServiceImpl;
 import com.sekulska.services.impl.RealTimeCurrencyService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@RestController
+@Controller
 @RequestMapping("price")
-public class Controller {
+public class CurrencyExchangeController {
 
     @Autowired
     private DailyCurrencyServiceImpl dailyCurrencyService;
 
     @Autowired
     private RealTimeCurrencyService realTimeCurrencyService;
+    @Autowired
+    private ActiveCurrenciesService activeCurrenciesService;
 
+    @GetMapping("/currencies")
+    public ResponseEntity getActiveCurrencies() throws IOException {
+        return ResponseEntity.ok(activeCurrenciesService.getActiveCurrencies());
+    }
     @GetMapping("/historical")
     public ResponseEntity checkPriceData(
             @RequestParam(value = "from_symbol") String from_symbol,
@@ -42,6 +50,17 @@ public class Controller {
         PriceData priceData = realTimeCurrencyService.getPriceData(from_symbol, to_symbol);
         return ResponseEntity.ok(priceData);
 
+    }
+
+    @GetMapping({"/", "/hello"})
+    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
+        model.addAttribute("name", name);
+        return "hello";
+    }
+
+    @GetMapping("/chart")
+    public String chart(){
+        return "currency_chart";
     }
 
     private RangeAndStep getRangeAndStep(String range){

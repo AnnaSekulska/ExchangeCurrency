@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-en_US.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.js"></script> -->
+    <script>
+		$(document).ready(function () {
+
+			function loadActiveCurrencies() {
+				$.get("/price/currencies", function(result) {
+					  var fromSymbol = document.getElementById("fromSymbol");
+					  var toSymbol = document.getElementById("toSymbol");
+
+					$.each(result, function(index, element){
+						var li = document.createElement("option");
+						var linkText = document.createTextNode(element["shortName"]);
+						li.appendChild(linkText);
+						  fromSymbol.appendChild(li);
+						  var li2 = document.createElement("option");
+						var linkText2 = document.createTextNode(element["shortName"]);
+						li2.appendChild(linkText2);
+						  toSymbol.appendChild(li2);
+					})
+					$('.selectpicker').selectpicker('refresh');
+				})
+			}
+
+			loadActiveCurrencies()
+
+			function updateButtons(totalCount) {
+				if (totalCount >= 7) {
+					$("#1W").show();
+				} else {
+					$("#1W").hide();
+				}
+				if (totalCount >= 30) {
+					$("#1M").show();
+				} else {
+					$("#1M").hide();
+				}
+				if (totalCount >= 365) {
+					$("#1Y").show();
+				} else {
+					$("#1Y").hide();
+				}
+				if (totalCount >= 2* 365) {
+					$("#2Y").show();
+				} else {
+					$("#2Y").hide();
+				}
+				if (totalCount >= 5 * 365) {
+					$("#5Y").show();
+				} else {
+					$("#5Y").hide();
+				}
+				if (totalCount >= 10 * 365) {
+					$("#10Y").show();
+				} else {
+					$("#10Y").hide();
+				}
+			}
+
+			function getData(range) {
+				$.get("/price/historical",
+					{ from_symbol: $("#fromSymbol :selected").text(),
+						to_symbol: $("#toSymbol :selected").text(),
+						range: range
+					},
+					function (result) {
+						if (result["totalCount"] != null) {
+							totalCount = result["totalCount"];
+							updateButtons(totalCount)
+						}
+						chart.options.data[0].dataPoints = createDps(result["priceData"]);
+						chart.render();
+					})
+			}
+
+			function createDps(input) {
+				var result = [];
+				$.each(input, function (index, element) {
+					result.push(
+						{ x: Date.parse(element["date"]), y: parseFloat(element["price"]) }
+					)
+				})
+
+				return result;
+			};
+
+			$("#getData").click(function () {
+				getData("1W");
+			});
+
+			$("#1W").click(function(){
+				getData("1W")
+			})
+
+			$("#1M").click(function(){
+				getData("1M")
+			})
+
+			$("#1Y").click(function(){
+				getData("1Y")
+			})
+
+			$("#2Y").click(function(){
+				getData("2Y")
+			})
+
+			$("#5Y").click(function(){
+				getData("5Y")
+			})
+
+			$("#10Y").click(function(){
+				getData("10Y")
+			})
+
+			var chart = new CanvasJS.Chart("chartContainer", {
+				theme: "light2",
+				animationEnabled: true,
+				title: {
+					text: "Select Exchange Currencies"
+				},
+				axisY: {
+					includeZero: false,
+					title: "Price",
+				},
+				toolTip: {
+					shared: "true"
+				},
+				legend: {
+					cursor: "pointer",
+					itemclick: toggleDataSeries
+				},
+				data: [
+				{
+					type: "line",
+					showInLegend: true,
+					name: "growth trend",
+					xValueType: "dateTime",
+					dataPoints: [
+						{x: 1558569600000, y: 0.8961},
+						{x: 1558483200000, y: 0.8955}
+					]
+				}
+			]
+			});
+			// chart.render();
+
+			function toggleDataSeries(e) {
+				if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+					e.dataSeries.visible = false;
+				} else {
+					e.dataSeries.visible = true;
+				}
+				chart.render();
+			}
+		});
+
+	</script>
+</head>
+
+<body>
+<label for="fromSymbol">From</label>
+<select class="selectpicker" id="fromSymbol">
+</select>
+<label for="toSymbol">To</label>
+<select class="selectpicker" id="toSymbol">
+</select>
+<button id="getData" type="button" class="btn btn-primary">Get</button>
+<div id="chartContainer" style="height: 300px; width: 80%;"></div>
+<div id=ranges>
+    <button id="1W" type="button" class="btn btn-secondary" style="display: none;">1W</button>
+    <button id="1M" type="button" class="btn btn-secondary" style="display: none;">1M</button>
+    <button id="1Y" type="button" class="btn btn-secondary" style="display: none;">1Y</button>
+    <button id="2Y" type="button" class="btn btn-secondary" style="display: none;">2Y</button>
+    <button id="5Y" type="button" class="btn btn-secondary" style="display: none;">5Y</button>
+    <button id="10Y" type="button" class="btn btn-secondary" style="display: none;">10Y</button>
+</div>
+<div id="result"></div>
+</body>
+
+</html>
