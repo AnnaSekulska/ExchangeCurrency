@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Scope("singleton")
@@ -21,19 +19,23 @@ public class ActiveCurrenciesServiceImpl implements ActiveCurrenciesService {
     @Autowired
     private ActiveCurrenciesChecker activeCurrenciesChecker;
 
-    @Override
+    private List<ActiveCurrencyInfo> activeCurrencies = new ArrayList<>();
+
     @PostConstruct
-    public List<ActiveCurrencyInfo> getActiveCurrencies() throws IOException {
-        List<ActiveCurrencyInfo> activeCurrencyInfos = new ArrayList<>();
+    public void loadActiveCurrencies() throws IOException {
         JSONObject jsonObject = new JSONObject(activeCurrenciesChecker.getActiveCurrencies());
         Iterator iterator = jsonObject.keys();
 
         while (iterator.hasNext()){
             String key = (String) iterator.next();
             String value = jsonObject.getString(key);
-            activeCurrencyInfos.add(new ActiveCurrencyInfo(key, value));
+            activeCurrencies.add(new ActiveCurrencyInfo(key, value));
         }
-        return activeCurrencyInfos;
     }
 
+    @Override
+    public List<ActiveCurrencyInfo> getActiveCurrencies() {
+        activeCurrencies.sort(Comparator.comparing(ActiveCurrencyInfo::getShortName));
+        return activeCurrencies;
+    }
 }
