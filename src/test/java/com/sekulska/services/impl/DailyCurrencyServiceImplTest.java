@@ -42,7 +42,7 @@ public class DailyCurrencyServiceImplTest {
         int range = 10;
         int step = 2;
         List<PriceData> allData = new ArrayList<>();
-        allData.add(new PriceData("2019-05-17", "1.1244"));
+        allData.add(new PriceData("2019-05-17", 1.1244f));
         List<PriceData> expectedList = new ArrayList<>();
 
         Mockito.when(dataChecker.getDailyPriceData(fromSymbol, toSymbol)).thenReturn(rawData);

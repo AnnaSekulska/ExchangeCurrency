@@ -46,13 +46,13 @@ public class HistoricalDataParserImplTest {
         List<PriceData> priceData = cut.parse(createJsonString());
 
         assertEquals("2019-05-16", priceData.get(0).getDate());
-        assertEquals("1.1165", priceData.get(0).getPrice());
+        assertEquals(1.1165f, priceData.get(0).getPrice());
 
         assertEquals("2019-05-17", priceData.get(1).getDate());
-        assertEquals("1.1206", priceData.get(1).getPrice());
+        assertEquals(1.1206f, priceData.get(1).getPrice());
 
         assertEquals("2019-05-18", priceData.get(2).getDate());
-        assertEquals("1.1174", priceData.get(2).getPrice());
+        assertEquals(1.1174f, priceData.get(2).getPrice());
 
     }
 

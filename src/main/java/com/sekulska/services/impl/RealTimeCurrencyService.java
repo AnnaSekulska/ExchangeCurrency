@@ -22,7 +22,7 @@ public class RealTimeCurrencyService implements CurrencyService {
     }
 
     private PriceData createPriceData(JSONObject jsonObject){
-        return new PriceData(jsonObject.getString("6. Last Refreshed"), jsonObject.getString("5. Exchange Rate"));
+        return new PriceData(jsonObject.getString("6. Last Refreshed"), Float.valueOf(jsonObject.getString("5. Exchange Rate")));
     }
 
     private JSONObject convertFromResponseBody(String jsonString){

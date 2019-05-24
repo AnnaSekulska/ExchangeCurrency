@@ -27,7 +27,7 @@ public class HistoricalDataParserImpl implements HistoricalDataParser {
         while (iterator.hasNext()) {
             String key = (String) iterator.next();
             String value = jsonChildObject.getJSONObject(key).getString("1. open");
-            priceDataList.add(new PriceData(key, value));
+            priceDataList.add(new PriceData(key, Float.valueOf(value)));
         }
         sortPriceDataList(priceDataList);
         return priceDataList;

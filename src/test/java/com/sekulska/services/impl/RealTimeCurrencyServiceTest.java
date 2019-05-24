@@ -42,7 +42,7 @@ public class RealTimeCurrencyServiceTest {
 
         PriceData priceData = cut.getPriceData("test", "test");
         assertEquals("2019-05-20 05:34:35", priceData.getDate());
-        assertEquals("110.16000000", priceData.getPrice());
+        assertEquals(110.16000000f, priceData.getPrice());
 
     }
 
