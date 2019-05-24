@@ -59,7 +59,6 @@ public class HistoricalFilterImplTest {
 
       assertEquals(new PriceData("2019-05-21","1.1170" ), filtered.get(0));
       assertEquals(new PriceData("2019-05-15","1.1207" ), filtered.get(1));
-      assertEquals(new PriceData("2019-05-09","1.1197" ), filtered.get(2));
    }
 
    @Test
@@ -72,7 +71,6 @@ public class HistoricalFilterImplTest {
       assertEquals(new PriceData("2019-05-16","1.1206" ), filtered.get(2));
       assertEquals(new PriceData("2019-05-14","1.1231" ), filtered.get(3));
       assertEquals(new PriceData("2019-05-12","1.1234" ), filtered.get(4));
-      assertEquals(new PriceData("2019-05-09","1.1197" ), filtered.get(5));
    }
    @Test
    public void testCheckIfDataAreCorrectlyFilteredForRange3AndStep3(){
@@ -80,7 +78,6 @@ public class HistoricalFilterImplTest {
       List<PriceData> filtered = cut.filter(priceData, 3, 3);
 
       assertEquals(new PriceData("2019-05-21","1.1170" ), filtered.get(0));
-      assertEquals(new PriceData("2019-05-17","1.1174" ), filtered.get(1));
    }
    @Test
    public void testCheckIfDataAreCorrectlyFilteredForRange9AndStep4(){
@@ -100,10 +97,10 @@ public class HistoricalFilterImplTest {
     @Test
     public void testCheckIfFilteredListHasCorrectlySize(){
        List<PriceData> priceData = getTestPriceData(path);
-       assertEquals(4, cut.filter(priceData, 3, 1).size());
-       assertEquals(3, cut.filter(priceData, 10, 5).size());
-       assertEquals(6, cut.filter(priceData, 10, 2).size());
-       assertEquals(2, cut.filter(priceData, 3, 3).size());
+       assertEquals(3, cut.filter(priceData, 3, 1).size());
+       assertEquals(2, cut.filter(priceData, 10, 5).size());
+       assertEquals(5, cut.filter(priceData, 10, 2).size());
+       assertEquals(1, cut.filter(priceData, 3, 3).size());
        assertEquals(3, cut.filter(priceData, 9, 4).size());
     }
 
