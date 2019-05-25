@@ -5,7 +5,6 @@ import com.sekulska.model.PriceDataInfo;
 import com.sekulska.services.ActiveCurrenciesService;
 import com.sekulska.services.impl.DailyCurrencyServiceImpl;
 import com.sekulska.services.impl.RealTimeCurrencyService;
-import com.sekulska.services.impl.TrendLineDataSelectorImpl;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +25,6 @@ public class CurrencyExchangeController {
     private RealTimeCurrencyService realTimeCurrencyService;
     @Autowired
     private ActiveCurrenciesService activeCurrenciesService;
-    @Autowired
-    private TrendLineDataSelectorImpl trendLineDataSelector;
 
     @GetMapping("/currencies")
     public ResponseEntity getActiveCurrencies() throws IOException {
