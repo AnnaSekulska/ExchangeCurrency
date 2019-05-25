@@ -1,5 +1,6 @@
 package com.sekulska.datacheck;
 
+import com.sekulska.exceptions.ResourcesNotFoundException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
