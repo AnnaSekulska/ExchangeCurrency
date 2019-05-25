@@ -1,7 +1,7 @@
 package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.PriceData;
-import com.sekulska.datacheck.ResourcesNotFoundException;
+import com.sekulska.exceptions.RangeExceededException;
 import com.sekulska.services.HistoricalFilter;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +19,6 @@ public class HistoricalFilterImpl implements HistoricalFilter {
             }
             return filteredPriceData;
         }
-        throw new ResourcesNotFoundException("No data for the given time interval.");
+        throw new RangeExceededException("No data for the given time interval.");
     }
 }

@@ -1,7 +1,7 @@
 package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.PriceData;
-import com.sekulska.datacheck.ResourcesNotFoundException;
+import com.sekulska.exceptions.CurrencyUnavailableException;
 import org.json.JSONException;
 import org.junit.Test;
 
@@ -74,7 +74,7 @@ public class HistoricalDataParserImplTest {
         assertEquals("2019-05-18", priceDataList.get(2).getDate());
     }
 
-    @Test(expected = ResourcesNotFoundException.class)
+    @Test(expected = CurrencyUnavailableException.class)
     public void testCheckIfErrorMessageIsHandled() throws JSONException {
         cut.parse(createErrorJsonString());
     }

@@ -1,7 +1,7 @@
 package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.PriceData;
-import com.sekulska.datacheck.ResourcesNotFoundException;
+import com.sekulska.exceptions.RangeExceededException;
 import org.json.JSONException;
 import org.junit.Test;
 
@@ -89,7 +89,7 @@ public class HistoricalFilterImplTest {
       assertEquals(new PriceData("2019-05-12",1.1234f ), filtered.get(2));
    }
 
-    @Test(expected = ResourcesNotFoundException.class)
+    @Test(expected = RangeExceededException.class)
     public void testCheckIfErrorMessageIsHandledWhenThereIsNotEnoughDataForSuchRange() throws JSONException {
        cut.filter(getTestPriceData(path), 100, 9);
     }

@@ -1,7 +1,8 @@
 package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.PriceData;
-import com.sekulska.datacheck.ResourcesNotFoundException;
+import com.sekulska.exceptions.CallsLimitExhaustedException;
+import com.sekulska.exceptions.CurrencyUnavailableException;
 import com.sekulska.services.HistoricalDataParser;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,9 @@ public class HistoricalDataParserImpl implements HistoricalDataParser {
 
     private JSONObject convertFromResponseBody(String responseBody) throws JSONException {
         JSONObject jsonObject = new JSONObject(responseBody);
-        if(jsonObject.has("Error Message")) throw new ResourcesNotFoundException("Please check other currencies");
+        if(jsonObject.has("Error Message")) throw new CurrencyUnavailableException("Please check other currencies");
+        if(jsonObject.has("Note")) throw new CallsLimitExhaustedException("Calls limit exhausted.");
+
         return jsonObject.getJSONObject("Time Series FX (Daily)");
     }
 
