@@ -3,6 +3,7 @@ package com.sekulska.services.impl;
 import com.sekulska.datacheck.DataChecker;
 import com.sekulska.datacheck.PriceData;
 import com.sekulska.model.PriceDataInfo;
+import com.sekulska.model.TrendLineInfo;
 import com.sekulska.services.HistoricalDataParser;
 import com.sekulska.services.HistoricalFilter;
 import org.json.JSONException;
@@ -31,6 +32,9 @@ public class DailyCurrencyServiceImplTest {
     @Mock
     private HistoricalDataParser parser;
 
+    @Mock
+    private TrendLineDataSelectorImpl selector;
+
     @InjectMocks
     private DailyCurrencyServiceImpl cut;
 
@@ -44,11 +48,12 @@ public class DailyCurrencyServiceImplTest {
         List<PriceData> allData = new ArrayList<>();
         allData.add(new PriceData("2019-05-17", 1.1244f));
         List<PriceData> expectedList = new ArrayList<>();
+        List<TrendLineInfo> expectedTrendList = new ArrayList<>();
 
         Mockito.when(dataChecker.getDailyPriceData(fromSymbol, toSymbol)).thenReturn(rawData);
         Mockito.when(parser.parse(rawData)).thenReturn(allData);
         Mockito.when(filter.filter(allData, range, step)).thenReturn(expectedList);
-
+        Mockito.when(selector.getTrendLineInfo(expectedList, range)).thenReturn(expectedTrendList);
         PriceDataInfo result = cut.getHistorical(fromSymbol, toSymbol, range, step);
 
         assertEquals(expectedList, result.getPriceData());

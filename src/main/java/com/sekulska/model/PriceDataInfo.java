@@ -8,10 +8,12 @@ public class PriceDataInfo {
 
     private List<PriceData> priceData;
     private int totalCount;
+    private List<TrendLineInfo> trendLineInfos;
 
-    public PriceDataInfo(List<PriceData> priceData, int totalCount) {
+    public PriceDataInfo(List<PriceData> priceData, int totalCount, List<TrendLineInfo> trendLineInfos) {
         this.priceData = priceData;
         this.totalCount = totalCount;
+        this.trendLineInfos = trendLineInfos;
     }
 
     public List<PriceData> getPriceData() {
@@ -20,5 +22,9 @@ public class PriceDataInfo {
 
     public int getTotalCount() {
         return totalCount;
+    }
+
+    public List<TrendLineInfo> getTrendLineInfos() {
+        return trendLineInfos;
     }
 }

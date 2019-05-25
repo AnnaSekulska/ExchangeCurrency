@@ -5,11 +5,11 @@ import com.sekulska.model.PriceDataInfo;
 import com.sekulska.services.ActiveCurrenciesService;
 import com.sekulska.services.impl.DailyCurrencyServiceImpl;
 import com.sekulska.services.impl.RealTimeCurrencyService;
+import com.sekulska.services.impl.TrendLineDataSelectorImpl;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,11 +22,12 @@ public class CurrencyExchangeController {
 
     @Autowired
     private DailyCurrencyServiceImpl dailyCurrencyService;
-
     @Autowired
     private RealTimeCurrencyService realTimeCurrencyService;
     @Autowired
     private ActiveCurrenciesService activeCurrenciesService;
+    @Autowired
+    private TrendLineDataSelectorImpl trendLineDataSelector;
 
     @GetMapping("/currencies")
     public ResponseEntity getActiveCurrencies() throws IOException {
@@ -50,12 +51,6 @@ public class CurrencyExchangeController {
         PriceData priceData = realTimeCurrencyService.getPriceData(from_symbol, to_symbol);
         return ResponseEntity.ok(priceData);
 
-    }
-
-    @GetMapping({"/", "/hello"})
-    public String hello(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
-        model.addAttribute("name", name);
-        return "hello";
     }
 
     @GetMapping("/chart")
