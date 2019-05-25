@@ -34,32 +34,32 @@ public class TrendLineDataSelectorImplTest {
     public void testCheckIfMethodReturnCorrectlyListOfTrendLineInfosForWindowSizeEqual3(){
         List<TrendLineInfo> trendLineInfos = cut.getTrends(getPriceData(), 3);
         assertEquals(downtrend, trendLineInfos.get(0).getDirection());
-        assertEquals("1maj", trendLineInfos.get(0).getStartDate());
-        assertEquals("7maj", trendLineInfos.get(0).getEndDate());
+        assertEquals("1maj", trendLineInfos.get(0).getStart().getDate());
+        assertEquals("7maj", trendLineInfos.get(0).getEnd().getDate());
     }
     @Test
     public void testCheckIfMethodReturnCorrectlyListOfTrendLineInfosForWindowSizeEqual2(){
 
         List<TrendLineInfo> trendLineInfos = cut.getTrends(getPriceData(), 2);
         assertEquals(downtrend, trendLineInfos.get(0).getDirection());
-        assertEquals("1maj", trendLineInfos.get(0).getStartDate());
-        assertEquals("6maj", trendLineInfos.get(0).getEndDate());
+        assertEquals("1maj", trendLineInfos.get(0).getStart().getDate());
+        assertEquals("6maj", trendLineInfos.get(0).getEnd().getDate());
 
         assertEquals(uptrend, trendLineInfos.get(1).getDirection());
-        assertEquals("6maj", trendLineInfos.get(1).getStartDate());
-        assertEquals("7maj", trendLineInfos.get(1).getEndDate());
+        assertEquals("6maj", trendLineInfos.get(1).getStart().getDate());
+        assertEquals("7maj", trendLineInfos.get(1).getEnd().getDate());
 
         assertEquals(downtrend, trendLineInfos.get(2).getDirection());
-        assertEquals("7maj", trendLineInfos.get(2).getStartDate());
-        assertEquals("9maj", trendLineInfos.get(2).getEndDate());
+        assertEquals("7maj", trendLineInfos.get(2).getStart().getDate());
+        assertEquals("9maj", trendLineInfos.get(2).getEnd().getDate());
     }
     @Test
     public void testCheckIfMethodReturnCorrectlyListOfTrendLineInfosForWindowSizeEqual4(){
 
         List<TrendLineInfo> trendLineInfos = cut.getTrends(getPriceData(), 4);
         assertEquals(downtrend, trendLineInfos.get(0).getDirection());
-        assertEquals("1maj", trendLineInfos.get(0).getStartDate());
-        assertEquals("7maj", trendLineInfos.get(0).getEndDate());
+        assertEquals("1maj", trendLineInfos.get(0).getStart().getDate());
+        assertEquals("7maj", trendLineInfos.get(0).getEnd().getDate());
 
     }
     @Test

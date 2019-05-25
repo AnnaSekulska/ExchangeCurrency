@@ -1,22 +1,24 @@
 package com.sekulska.model;
 
+import com.sekulska.datacheck.PriceData;
+
 public class TrendLineInfo {
-    private String startDate;
-    private String endDate;
+    private PriceData start;
+    private PriceData end;
     private String direction;
 
-    public TrendLineInfo(String startDate, String endDate, String direction) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public TrendLineInfo(PriceData start, PriceData end, String direction) {
+        this.start = start;
+        this.end = end;
         this.direction = direction;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public PriceData getStart() {
+        return start;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public PriceData getEnd() {
+        return end;
     }
 
     public String getDirection() {

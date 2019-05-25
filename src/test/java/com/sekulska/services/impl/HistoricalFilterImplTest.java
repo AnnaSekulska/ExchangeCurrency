@@ -47,9 +47,9 @@ public class HistoricalFilterImplTest {
    public void testCheckIfDataAreCorrectlyFilteredForRange3AndStep1(){
       List<PriceData> priceData = getTestPriceData(path);
       List<PriceData> filtered = cut.filter(priceData, 3, 1);
-      assertEquals(new PriceData("2019-05-21",1.1170f ), filtered.get(0));
+      assertEquals(new PriceData("2019-05-21",1.1170f ), filtered.get(2));
       assertEquals(new PriceData("2019-05-20",1.1163f ), filtered.get(1));
-      assertEquals(new PriceData("2019-05-19",1.1161f ), filtered.get(2));
+      assertEquals(new PriceData("2019-05-19",1.1161f ), filtered.get(0));
    }
 
    @Test
@@ -57,8 +57,8 @@ public class HistoricalFilterImplTest {
       List<PriceData> priceData = getTestPriceData(path);
       List<PriceData> filtered = cut.filter(priceData, 10, 5);
 
-      assertEquals(new PriceData("2019-05-21",1.1170f ), filtered.get(0));
-      assertEquals(new PriceData("2019-05-15",1.1207f ), filtered.get(1));
+      assertEquals(new PriceData("2019-05-10",1.1219f ), filtered.get(0));
+      assertEquals(new PriceData("2019-05-16",1.1206f ), filtered.get(1));
    }
 
    @Test
@@ -66,27 +66,27 @@ public class HistoricalFilterImplTest {
       List<PriceData> priceData = getTestPriceData(path);
       List<PriceData> filtered = cut.filter(priceData, 10, 2);
 
-      assertEquals(new PriceData("2019-05-21",1.1170f ), filtered.get(0));
-      assertEquals(new PriceData("2019-05-19",1.1161f ), filtered.get(1));
-      assertEquals(new PriceData("2019-05-16",1.1206f ), filtered.get(2));
-      assertEquals(new PriceData("2019-05-14",1.1231f ), filtered.get(3));
-      assertEquals(new PriceData("2019-05-12",1.1234f ), filtered.get(4));
+      assertEquals(new PriceData("2019-05-10",1.1219f ), filtered.get(0));
+      assertEquals(new PriceData("2019-05-13",1.1235f ), filtered.get(1));
+      assertEquals(new PriceData("2019-05-15",1.1207f ), filtered.get(2));
+      assertEquals(new PriceData("2019-05-17",1.1174f ), filtered.get(3));
+      assertEquals(new PriceData("2019-05-20",1.1163f ), filtered.get(4));
    }
    @Test
    public void testCheckIfDataAreCorrectlyFilteredForRange3AndStep3(){
       List<PriceData> priceData = getTestPriceData(path);
       List<PriceData> filtered = cut.filter(priceData, 3, 3);
 
-      assertEquals(new PriceData("2019-05-21",1.1170f ), filtered.get(0));
+      assertEquals(new PriceData("2019-05-19",1.1161f ), filtered.get(0));
    }
    @Test
    public void testCheckIfDataAreCorrectlyFilteredForRange9AndStep4(){
       List<PriceData> priceData = getTestPriceData(path);
       List<PriceData> filtered = cut.filter(priceData, 9, 4);
 
-      assertEquals(new PriceData("2019-05-21",1.1170f ), filtered.get(0));
+      assertEquals(new PriceData("2019-05-21",1.1170f ), filtered.get(2));
       assertEquals(new PriceData("2019-05-16",1.1206f ), filtered.get(1));
-      assertEquals(new PriceData("2019-05-12",1.1234f ), filtered.get(2));
+      assertEquals(new PriceData("2019-05-12",1.1234f ), filtered.get(0));
    }
 
     @Test(expected = RangeExceededException.class)

@@ -40,8 +40,8 @@ public class TrendLineDataSelectorImpl implements TrendLineDataSelector {
                 sublist = priceData.subList(i, i + windowSize);
                 currentMax = Collections.max(sublist, Comparator.comparing(PriceData::getPrice));
             }else {
-               if(isUpTrend) result.add(new TrendLineInfo(startMax.getDate(), previousMax.getDate(),"uptrend" ));
-               if(isDownTrend) result.add(new TrendLineInfo(startMax.getDate(), previousMax.getDate(),"downtrend" ));
+               if(isUpTrend) result.add(new TrendLineInfo(startMax, previousMax,"uptrend" ));
+               if(isDownTrend) result.add(new TrendLineInfo(startMax, previousMax,"downtrend" ));
                 break;
             }
 
@@ -49,7 +49,7 @@ public class TrendLineDataSelectorImpl implements TrendLineDataSelector {
                 if(isDownTrend) {
                     previousMax = currentMax;
                 }else if (isUpTrend){
-                    result.add(new TrendLineInfo(startMax.getDate(), previousMax.getDate(), "uptrend"));
+                    result.add(new TrendLineInfo(startMax, previousMax, "uptrend"));
                     startMax = previousMax;
                     previousMax = currentMax;
                     isDownTrend = true;
@@ -62,7 +62,7 @@ public class TrendLineDataSelectorImpl implements TrendLineDataSelector {
                 if(isUpTrend){
                     previousMax = currentMax;
                 }else if (isDownTrend){
-                    result.add(new TrendLineInfo(startMax.getDate(), previousMax.getDate(), "downtrend"));
+                    result.add(new TrendLineInfo(startMax, previousMax, "downtrend"));
                     startMax = previousMax;
                     previousMax = currentMax;
                     isDownTrend = false;
@@ -74,9 +74,9 @@ public class TrendLineDataSelectorImpl implements TrendLineDataSelector {
             }
             if(!currentMax.getDate().equals(startMax.getDate())) {
                 if (i == priceData.size() - windowSize & isUpTrend) {
-                    result.add(new TrendLineInfo(startMax.getDate(), previousMax.getDate(), "uptrend"));
+                    result.add(new TrendLineInfo(startMax, previousMax, "uptrend"));
                 } else if (i == priceData.size() - windowSize & isDownTrend) {
-                    result.add(new TrendLineInfo(startMax.getDate(), previousMax.getDate(), "downtrend"));
+                    result.add(new TrendLineInfo(startMax, previousMax, "downtrend"));
                 }
             }
         }
