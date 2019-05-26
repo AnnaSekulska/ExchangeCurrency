@@ -86,10 +86,10 @@ public class TrendLineDataSelectorImpl implements TrendLineDataSelector {
     private int getWindowSize(int range){
         if(range == 7) return 1;
         else if(range == 30) return 3;
-        else if(range == 365) return 9;
-        else if(range == 365 * 2) return 18;
-        else if(range == 365 * 5) return 45;
-        else if(range == 365 * 10) return 92;
+        else if(range == 365) return 10;
+        else if(range == 365 * 2) return 10;
+        else if(range == 365 * 5) return 10;
+        else if(range == 365 * 10) return 10;
         else throw new IllegalArgumentException("Invalid range " + range);
     }
 }
