@@ -14,17 +14,6 @@
 
     <!-- (Optional) Latest compiled and minified JavaScript translation files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-en_US.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.js"></script> -->
     <script>
 		$(document).ready(function () {
 
@@ -89,27 +78,79 @@
 						range: range
 					},
 					function (result) {
+						$("#errors").text("")
 						if (result["totalCount"] != null) {
 							totalCount = result["totalCount"];
 							updateButtons(totalCount)
 						}
+
 						chart.options.data[0].dataPoints = createDps(result["priceData"]);
+						chart.options.data[1].dataPoints = createTrendLine(result["trendLineInfos"]);
+
 						chart.render();
+					}).error(function(xhr) {
+						$("#errors").text(xhr.responseJSON["message"])
 					})
 			}
 
+			function createTrendLine(trendLineInfos) {
+				var result = [];
+				$.each(trendLineInfos, function(index, element) {
+					var color;
+					if (element["direction"] == "uptrend") {
+						color = "green";
+					} else {
+						color = "red";
+					}
+
+					result.push({
+						x: Date.parse(element["start"]["date"]),
+						y: element["start"]["price"],
+						lineColor: color
+					})
+					if (index == trendLineInfos.length - 1) {
+						result.push({
+							x: Date.parse(element["end"]["date"]),
+							y: element["end"]["price"]
+						})
+					}
+				})
+
+				return result;
+			}
 			function createDps(input) {
 				var result = [];
+
 				$.each(input, function (index, element) {
 					result.push(
-						{ x: Date.parse(element["date"]), y: parseFloat(element["price"]) }
+						{ x: Date.parse(element["date"]), y: element["price"] }
 					)
 				})
 
 				return result;
 			};
 
+			function updateCurrentPrice(){
+				$.get("/price/realtime",
+				{
+				from_currency: $("#fromSymbol :selected").text(),
+						to_currency: $("#toSymbol :selected").text()
+						},
+						function(result) {
+							$("#errors2").text("")
+								$("#currentPrice").text(result["price"])
+								$("#updateTime").text(result["date"])
+						}).error(function(xhr) {
+						$("#errors2").text(xhr.responseJSON["message"])
+					})
+			}
+
+			var timer;
+
 			$("#getData").click(function () {
+				updateCurrentPrice()
+				clearInterval(timer)
+				timer = setInterval(updateCurrentPrice, 60 * 1000);
 				getData("1W");
 			});
 
@@ -158,16 +199,19 @@
 				{
 					type: "line",
 					showInLegend: true,
-					name: "growth trend",
+					name: "price",
 					xValueType: "dateTime",
-					dataPoints: [
-						{x: 1558569600000, y: 0.8961},
-						{x: 1558483200000, y: 0.8955}
-					]
+					dataPoints: []
+				},
+				{
+					type: "line",
+					showInLegend: true,
+					name: "trend",
+					xValueType: "dateTime",
+					dataPoints: []
 				}
 			]
 			});
-			// chart.render();
 
 			function toggleDataSeries(e) {
 				if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
@@ -183,6 +227,12 @@
 </head>
 
 <body>
+<div>
+    <span id="errors" style="color: red"></span>
+</div>
+<div>
+    <span id="errors2" style="color: red"></span>
+</div>
 <label for="fromSymbol">From</label>
 <select class="selectpicker" id="fromSymbol">
 </select>
@@ -190,6 +240,14 @@
 <select class="selectpicker" id="toSymbol">
 </select>
 <button id="getData" type="button" class="btn btn-primary">Get</button>
+<div>
+    <label for="currentPrice">Current Price:</label>
+    <span id="currentPrice"></span>
+</div>
+<div>
+    <label for="updateTime">Update Time:</label>
+    <span id="updateTime"></span>
+</div>
 <div id="chartContainer" style="height: 300px; width: 80%;"></div>
 <div id=ranges>
     <button id="1W" type="button" class="btn btn-secondary" style="display: none;">1W</button>
