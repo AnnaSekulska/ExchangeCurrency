@@ -21,7 +21,7 @@ public class HistoricalFilterImplTest {
 
    private HistoricalFilterImpl cut = new HistoricalFilterImpl();
 
-   private String path = "/home/ania/aplikacje/IdeaProjects2/CurrencyExchange/src/test/resources/test_eleven_price_data";
+   private String path = this.getClass().getClassLoader().getResource("test_eleven_price_data").getPath();
 
    private List<PriceData> getTestPriceData(String fileName){
 
