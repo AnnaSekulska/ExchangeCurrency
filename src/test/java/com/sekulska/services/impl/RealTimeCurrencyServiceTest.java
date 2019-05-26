@@ -21,7 +21,7 @@ public class RealTimeCurrencyServiceTest {
     private DataChecker dataChecker;
 
     @InjectMocks
-    private RealTimeCurrencyService cut;
+    private RealTimeCurrencyServiceImpl cut;
 
     private String createJsonString(){
         return "{\"Realtime Currency Exchange Rate\": {\n" +

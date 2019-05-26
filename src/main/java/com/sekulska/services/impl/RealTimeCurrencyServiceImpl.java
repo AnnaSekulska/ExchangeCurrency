@@ -2,7 +2,8 @@ package com.sekulska.services.impl;
 
 import com.sekulska.datacheck.DataChecker;
 import com.sekulska.datacheck.PriceData;
-import com.sekulska.services.CurrencyService;
+import com.sekulska.exceptions.CallsLimitExhaustedException;
+import com.sekulska.services.RealTimeCurrencyService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class RealTimeCurrencyService implements CurrencyService {
+public class RealTimeCurrencyServiceImpl implements RealTimeCurrencyService {
 
     @Autowired
     private DataChecker dataChecker;
@@ -27,6 +28,7 @@ public class RealTimeCurrencyService implements CurrencyService {
 
     private JSONObject convertFromResponseBody(String jsonString){
         JSONObject jsonObject = new JSONObject(jsonString);
+        if(jsonObject.has("Note")) throw new CallsLimitExhaustedException("Calls limit exhausted.");
         return jsonObject.getJSONObject("Realtime Currency Exchange Rate");
     }
 }
